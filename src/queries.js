@@ -42,4 +42,14 @@ export async function printHumansAndAnimals() {
 
 // Return a Set containing the full names of all humans
 // with animals of the given species.
-export async function getHumansByAnimalSpecies(species) {}
+export async function getHumansByAnimalSpecies(species) {
+    const humans = new Set();
+    const petsOfSpecies = await Animal.findAll({ where: { species: species } });
+    for(let i = 0; i < petsOfSpecies.length; i++) {
+        const ownerId = petsOfSpecies[i].humanId;
+        const owner = await Human.findOne({ where: { humanId: ownerId } });
+        humans.add(owner.getFullName());
+    }
+    return humans;
+}
+
