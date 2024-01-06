@@ -1,4 +1,4 @@
-import Sequelize, { DataTypes, Model } from 'sequelize/types/sequelize.js';
+import Sequelize, { DataTypes, Model } from 'sequelize';
 import util from 'util';
 import connectToDB from './db.js';
 
@@ -16,7 +16,7 @@ export class Human extends Model {
 
 Human.init(
   {
-    human_id: {
+    humanId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
@@ -48,7 +48,7 @@ export class Animal extends Model {
 
 Animal.init(
   {
-    animal_id: {
+    animalId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
@@ -61,10 +61,10 @@ Animal.init(
       type: DataTypes.STRING(25),
       allowNull: false,
     },
-    birth_year: {
+    birthYear: {
       type: DataTypes.INTEGER,
     }
-    //humanId FK from Human.human_id
+    //humanId FK from Human.humanId
   },
   {
     modelName: 'animal',
@@ -72,7 +72,7 @@ Animal.init(
   }
 );
 
-Human.hasMany(Animal, { foreignKey: 'human_id' });
-Animal.belongsTo(Human, { foreignKey: 'human_id' });
+Human.hasMany(Animal, { foreignKey: 'humanId' });
+Animal.belongsTo(Human, { foreignKey: 'humanId' });
 
 export default db;
