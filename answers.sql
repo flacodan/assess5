@@ -33,3 +33,12 @@ GROUP BY c.email
 ORDER BY total DESC;
 
 ---PROBLEM 6---
+SELECT DISTINCT fname, lname, email 
+FROM customers 
+JOIN orders 
+    ON orders.customer_id = customers.id 
+WHERE orders.processed = true 
+    AND orders.cupcake_id = 
+    (SELECT id 
+    FROM cupcakes 
+    WHERE name = 'funfetti');
