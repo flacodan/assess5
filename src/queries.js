@@ -17,18 +17,28 @@ export const query4 = await Animal.findAll({ where: { birthYear: { [Op.gt]: 2015
 export const query5 = await Human.findAll({ where: { fname: { [Op.startsWith]: 'J' }}});
 
 // Get all the animals who don't have a birth year
-export const query6 = null;
+export const query6 = await Animal.findAll({ where: { birthYear: { [Op.is]: null }}});
 
 // Get all the animals with species "fish" OR "rabbit"
-export const query7 = null;
+export const query7 = await Animal.findAll({ where: { [Op.or]: [{ species: 'fish' },{ species: 'rabbit' }] }});
 
 // Get all the humans who DON'T have an email address that contains "gmail"
-export const query8 = null;
+export const query8 = await Human.findAll({ where: { email: { [Op.notLike]: '%gmail%' } }});
 
 // Continue reading the instructions before you move on!
 
 // Print a directory of humans and their animals
-export async function printHumansAndAnimals() {}
+export async function printHumansAndAnimals() {
+    const humansArray = await Human.findAll();
+    for(let i = 0; i < humansArray.length; i++) {
+        const iId = humansArray[i].humanId;
+        console.log(humansArray[i].getFullName());
+        const petsArray = await Animal.findAll({ where: { humanId: iId } })
+        for(let j = 0; j < petsArray.length; j++) {
+            console.log("- " + petsArray[j].name + ", " + petsArray[j].species);
+        }
+    }
+}
 
 // Return a Set containing the full names of all humans
 // with animals of the given species.
