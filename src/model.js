@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import Sequelize, { DataTypes, Model } from 'sequelize/types/sequelize.js';
 import util from 'util';
 import connectToDB from './db.js';
 
@@ -10,20 +10,69 @@ export class Human extends Model {
   }
 
   getFullName() {
-    // TODO: Implement this method
+    return [this.fname, this.lname].join(' ');
   }
-}
+};
 
-// TODO: Human.init()
+Human.init(
+  {
+    human_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    fname: {
+      type: DataTypes.STRING(25),
+      allowNull: false,
+    },
+    lname: {
+      type: DataTypes.STRING(25),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    }
+  },
+  {
+    modelName: 'human',
+    sequelize: db,
+  }
+);
 
 export class Animal extends Model {
   [util.inspect.custom]() {
     return this.toJSON();
   }
-}
+};
 
-// TODO: Animal.init()
+Animal.init(
+  {
+    animal_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    species: {
+      type: DataTypes.STRING(25),
+      allowNull: false,
+    },
+    birth_year: {
+      type: DataTypes.INTEGER,
+    }
+    //humanId FK from Human.human_id
+  },
+  {
+    modelName: 'animal',
+    sequelize: db,
+  }
+);
 
-// TODO: Define Relationship
+Human.hasMany(Animal, { foreignKey: 'human_id' });
+Animal.belongsTo(Human, { foreignKey: 'human_id' });
 
 export default db;
